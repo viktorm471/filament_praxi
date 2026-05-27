@@ -53,8 +53,8 @@ class Login extends BaseAuthLogin
         if ($user->wasRecentlyCreated) {
             try {
                 Notification::make()
-                    ->title('New user pending approval')
-                    ->body("{$user->name} needs approval.")
+                    ->title('Nuevo usuario pendiente de aprobación')
+                    ->body("{$user->name} necesita aprobación.")
                     ->warning()
                     ->sendToDatabase(
                         User::where('is_admin', true)
@@ -68,7 +68,7 @@ class Login extends BaseAuthLogin
 
                 Notification::make()
                     ->danger()
-                    ->title('Something went wrong')
+                    ->title('Algo salió mal')
                     ->body('No se pudo enviar la notificación de nuevo usuario.')
                     ->send();
                 return null;
@@ -79,8 +79,8 @@ class Login extends BaseAuthLogin
 
             Notification::make()
                 ->danger()
-                ->title('Account pending approval')
-                ->body('Your account is pending approval. Please wait for an administrator to activate your account.')
+                ->title('Cuenta pendiente de aprobación')
+                ->body('Tu cuenta está pendiente de aprobación. Espera a que un administrador active tu cuenta.')
                 ->send();
 
             return null;

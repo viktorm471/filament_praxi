@@ -74,10 +74,12 @@ class AppointmentImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your appointment import has completed and ' . Number::format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $successfulRowsLabel = $import->successful_rows === 1 ? 'fila' : 'filas';
+        $body = 'La importación de citas se completó y se importaron ' . Number::format($import->successful_rows) . " {$successfulRowsLabel}.";
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . Number::format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
+            $failedRowsLabel = $failedRowsCount === 1 ? 'fila' : 'filas';
+            $body .= ' No se pudieron importar ' . Number::format($failedRowsCount) . " {$failedRowsLabel}.";
         }
 
         return $body;
@@ -107,13 +109,13 @@ class AppointmentImporter extends Importer
             return $notification
                 ->persistent()
                 ->warning()
-                ->title('Import completed with errors');
+                ->title('Importación completada con errores');
         }
 
         return $notification
             ->persistent()
             ->success()
-            ->title('Import successful');
+            ->title('Importación exitosa');
     }
 
     // Size of each chunk of records to be processed.
